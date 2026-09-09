@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meme Stonks | $MemeStonks — Rocket-Fueled Memes on Solana</title>
+  <meta name="description" content="Meme Stonks brings rocket-fueled memes, diamond hands, and unstoppable Solana energy straight to the moon!" />
+  <meta name="theme-color" content="#03091a" />
+  <meta property="og:title" content="Meme Stonks | $MemeStonks" />
+  <meta property="og:description" content="Meme Stonks brings rocket-fueled memes, diamond hands, and unstoppable Solana energy straight to the moon!" />
+  <meta property="og:image" content="banner.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="banner.jpg" />
+  <link rel="icon" href="logo.jpg" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pit: "#03091a",
+            navy: "#061428",
+            board: "#0a2460",
+            tick: "#7ec8ff",
+            neon: "#00e676",
+            stonk: "#ff8c00",
+            ringR: "#e81123",
+            ringP: "#68217a",
+            ringC: "#00bcf2",
+            ringG: "#00b294",
+            ringY: "#fff100",
+          },
+          fontFamily: {
+            display: ["Chakra Petch", "Impact", "sans-serif"],
+            mono: ["IBM Plex Mono", "ui-monospace", "monospace"],
+            sans: ["Sora", "system-ui", "sans-serif"],
+          },
+          boxShadow: {
+            neon: "0 0 28px rgba(0,230,118,0.4)",
+            stonk: "0 0 28px rgba(255,140,0,0.4)",
+            board: "0 24px 60px rgba(0,10,40,0.55)",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --ca: "TBA";
+      --pit: #03091a;
+      --neon: #00e676;
+      --stonk: #ff8c00;
+      --tick: #7ec8ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      background: var(--pit);
+      color: #e8f4ff;
+      font-family: Sora, system-ui, sans-serif;
+    }
+
+    ::selection {
+      background: var(--stonk);
+      color: #140800;
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #02060f; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #ff8c00, #00bcf2);
+      border-radius: 99px;
+    }
+
+    .ms-noise {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    #ms-board {
+      position: fixed;
+      inset: -8% -4% 0;
+      z-index: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+      gap: 2px;
+      opacity: 0.32;
+      pointer-events: none;
+      overflow: hidden;
+      transform: perspective(1100px) rotateX(18deg) scale(1.2);
+      transform-origin: center 8%;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.28) 55%, transparent 92%);
+    }
+
+    .ms-cell {
+      background: linear-gradient(180deg, #12408c 0%, #0a2460 58%, #071a46 100%);
+      border: 1px solid rgba(126, 200, 255, 0.14);
+      min-height: 68px;
+      padding: 8px 10px 6px;
+      font-family: "IBM Plex Mono", monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+
+    .ms-cell .sym {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: rgba(200, 228, 255, 0.55);
+    }
+
+    .ms-cell .px {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: #eaf4ff;
+      line-height: 1;
+    }
+
+    .ms-cell .chg { font-size: 11px; font-weight: 600; }
+    .ms-cell.up .chg { color: #00e676; }
+    .ms-cell.dn .chg { color: #ff4d6d; }
+    .ms-cell.flash-up { animation: flashUp 0.45s ease; }
+    .ms-cell.flash-dn { animation: flashDn 0.45s ease; }
+
+    @keyframes flashUp {
+      0% { background: linear-gradient(180deg, #1a8a4a, #0a2460); }
+      100% { background: linear-gradient(180deg, #12408c, #071a46); }
+    }
+    @keyframes flashDn {
+      0% { background: linear-gradient(180deg, #8a1a32, #0a2460); }
+      100% { background: linear-gradient(180deg, #12408c, #071a46); }
+    }
+
+    #ms-candles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.18;
+    }
+
+    .ms-scan {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0 2px,
+        rgba(0, 8, 24, 0.08) 2px 3px
+      );
+    }
+
+    .ms-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 50% -10%, rgba(0, 80, 180, 0.22), transparent 50%),
+        radial-gradient(ellipse at 90% 20%, rgba(255, 140, 0, 0.08), transparent 36%),
+        radial-gradient(ellipse at 10% 80%, rgba(0, 188, 242, 0.08), transparent 36%),
+        radial-gradient(ellipse at 50% 120%, rgba(3, 9, 26, 0.92), transparent 48%);
+    }
+
+    .ms-tape {
+      background: #02060f;
+      border-bottom: 1px solid rgba(255, 140, 0, 0.28);
+      overflow: hidden;
+      height: 34px;
+      display: flex;
+      align-items: center;
+    }
+
+    .ms-tape-track {
+      display: inline-flex;
+      animation: tape 40s linear infinite;
+      will-change: transform;
+    }
+
+    .ms-tape-track span {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      padding: 0 26px;
+      color: #cfe6ff;
+      white-space: nowrap;
+    }
+
+    .ms-tape-track .up { color: #00e676; }
+    .ms-tape-track .dn { color: #ff6b81; }
+    .ms-tape-track .or { color: #ff8c00; }
+
+    @keyframes tape {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .ms-nav {
+      background: rgba(3, 9, 26, 0.78);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(126, 200, 255, 0.14);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ms-nav.scrolled {
+      background: rgba(2, 6, 15, 0.94);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .ms-nav-link {
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .ms-nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff8c00, #00e676);
+      transition: width 0.28s ease;
+    }
+
+    .ms-nav-link:hover,
+    .ms-nav-link.is-active { color: #00e676; }
+    .ms-nav-link:hover::after,
+    .ms-nav-link.is-active::after { width: 100%; }
+
+    .ring {
+      background: conic-gradient(
+        #e81123 0deg 60deg,
+        #68217a 60deg 120deg,
+        #00bcf2 120deg 180deg,
+        #00b294 180deg 240deg,
+        #fff100 240deg 300deg,
+        #ff8c00 300deg 360deg
+      );
+      animation: spin 14s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .ms-window {
+      background: linear-gradient(180deg, rgba(10, 28, 64, 0.72), rgba(3, 9, 26, 0.86));
+      border: 1px solid rgba(126, 200, 255, 0.18);
+      box-shadow: 0 24px 60px rgba(0, 8, 28, 0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
+    }
+
+    .ms-chrome {
+      background: linear-gradient(180deg, #14356e, #0b2048);
+      border-bottom: 1px solid rgba(126, 200, 255, 0.16);
+    }
+
+    .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .dot-r { background: #e81123; }
+    .dot-y { background: #fff100; }
+    .dot-g { background: #00e676; }
+
+    .btn-buy {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #ffb347 0%, #ff8c00 45%, #e06a00 100%);
+      color: #1a0c00;
+      box-shadow: 0 0 0 1px rgba(255,140,0,0.5), 0 10px 28px rgba(255,140,0,0.28);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .btn-buy:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 0 1px rgba(255,140,0,0.8), 0 14px 36px rgba(255,140,0,0.45);
+    }
+
+    .btn-buy::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.42) 50%, transparent 70%);
+      transform: translateX(-120%);
+    }
+
+    .btn-buy:hover::after { animation: shine 0.7s ease; }
+
+    @keyframes shine { to { transform: translateX(120%); } }
+
+    .btn-chart {
+      background: rgba(10, 36, 96, 0.55);
+      border: 1px solid rgba(0, 230, 118, 0.5);
+      color: #00e676;
+      box-shadow: inset 0 0 18px rgba(0, 230, 118, 0.06);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .btn-chart:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 230, 118, 0.1);
+      box-shadow: 0 0 24px rgba(0, 230, 118, 0.25);
+    }
+
+    .wordmark {
+      background: linear-gradient(180deg, #ffffff 0%, #7ec8ff 42%, #00e676 78%, #ff8c00 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 8px 22px rgba(0, 188, 242, 0.28));
+    }
+
+    .ca-box {
+      background: rgba(2, 8, 20, 0.72);
+      border: 1px dashed rgba(255, 140, 0, 0.45);
+    }
+
+    .step-card {
+      background: linear-gradient(180deg, rgba(12, 36, 86, 0.7), rgba(4, 12, 32, 0.86));
+      border: 1px solid rgba(126, 200, 255, 0.16);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .step-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 140, 0, 0.45);
+      box-shadow: 0 18px 40px rgba(0, 8, 28, 0.4);
+    }
+
+    .step-num {
+      background: conic-gradient(#e81123, #68217a, #00bcf2, #00b294, #fff100, #ff8c00, #e81123);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: reveal 0.7s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    @keyframes reveal { to { opacity: 1; transform: none; } }
+
+    .hud {
+      border: 1px solid rgba(126, 200, 255, 0.22);
+    }
+
+    .hud::before,
+    .hud::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #ff8c00;
+    }
+
+    .hud::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+    .hud::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+    #toast {
+      position: fixed;
+      bottom: 88px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      z-index: 80;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .social-btn {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px) scale(1.06);
+      box-shadow: 0 8px 22px rgba(0, 188, 242, 0.28);
+    }
+
+    @media (max-width: 767px) {
+      #ms-board { opacity: 0.22; }
+    }
+  </style>
+</head>
+<body class="relative min-h-screen antialiased">
+  <div id="ms-board" aria-hidden="true"></div>
+  <canvas id="ms-candles" aria-hidden="true"></canvas>
+  <div class="ms-noise"></div>
+  <div class="ms-scan"></div>
+  <div class="ms-vignette"></div>
+
+  <div class="relative z-10">
+    <div class="ms-tape">
+      <div class="ms-tape-track" id="tape"></div>
+    </div>
+
+    <header class="ms-nav sticky top-0 z-40">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+        <a href="#top" class="flex items-center gap-3">
+          <span class="relative grid h-11 w-11 place-items-center">
+            <span class="ring absolute inset-0 rounded-full"></span>
+            <img src="logo.jpg" alt="Meme Stonks logo" class="relative z-[1] h-9 w-9 rounded-full object-cover" />
+          </span>
+          <span>
+            <span class="block font-display text-lg leading-none tracking-wide text-white">MEME STONKS</span>
+            <span class="font-mono text-[10px] tracking-[0.22em] text-tick">$MEMESTONKS · SOL</span>
+          </span>
+        </a>
+
+        <nav class="hidden items-center gap-7 font-display text-sm tracking-[0.16em] text-tick md:flex">
+          <a href="#about" class="ms-nav-link">ABOUT</a>
+          <a href="#buy" class="ms-nav-link">HOW TO BUY</a>
+          <a href="#chart" class="ms-nav-link">CHART</a>
+          <a href="#community" class="ms-nav-link">COMMUNITY</a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <a href="https://t.me/MemeStonksSol" target="_blank" rel="noopener noreferrer" class="social-btn hidden h-10 w-10 overflow-hidden rounded-full border border-tick/20 sm:block" aria-label="Telegram">
+            <img src="tg.png" alt="Telegram" class="h-full w-full object-cover" />
+          </a>
+          <a href="https://x.com/MemeStonksSolX" target="_blank" rel="noopener noreferrer" class="social-btn hidden h-10 w-10 overflow-hidden rounded-full border border-white/10 sm:block" aria-label="X / Twitter">
+            <img src="x.png" alt="X" class="h-full w-full object-cover" />
+          </a>
+          <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="btn-buy hidden rounded-sm px-4 py-2 font-display text-sm tracking-[0.16em] md:inline-flex">
+            BUY NOW
+          </a>
+          <button id="menu-btn" class="grid h-10 w-10 place-items-center border border-tick/25 text-tick md:hidden" aria-label="Open menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" class="hidden border-t border-tick/15 px-4 py-4 md:hidden">
+        <div class="flex flex-col gap-3 font-display tracking-[0.16em] text-tick">
+          <a href="#about" class="py-2">ABOUT</a>
+          <a href="#buy" class="py-2">HOW TO BUY</a>
+          <a href="#chart" class="py-2">CHART</a>
+          <a href="#community" class="py-2">COMMUNITY</a>
+          <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="btn-buy mt-1 rounded-sm py-3 text-center">BUY NOW</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="relative overflow-hidden">
+        <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:py-16">
+          <div class="reveal">
+            <div class="mb-4 inline-flex items-center gap-2 border border-stonk/40 bg-stonk/10 px-3 py-1 font-mono text-[10px] tracking-[0.22em] text-stonk">
+              <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-neon"></span>
+              LIVE ON SOLANA · $MEMESTONKS
+            </div>
+            <h1 class="font-display text-5xl leading-[0.92] tracking-wide sm:text-6xl lg:text-7xl">
+              <span class="wordmark">MEME<br />STONKS</span>
+            </h1>
+            <p class="mt-2 font-mono text-sm tracking-[0.28em] text-tick">SYMBOL · $MEMESTONKS</p>
+            <p class="mt-6 max-w-xl text-base leading-relaxed text-blue-100/80 sm:text-lg">
+              Meme Stonks brings rocket-fueled memes, diamond hands, and unstoppable Solana energy straight to the moon!
+            </p>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="btn-buy inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-display text-lg tracking-[0.16em]">
+                BUY NOW
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 19L19 5M9 5h10v10"/></svg>
+              </a>
+              <a href="https://dexscreener.com/solana/TBA" target="_blank" rel="noopener noreferrer" class="btn-chart inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-display text-lg tracking-[0.16em]">
+                CHART
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-7"/></svg>
+              </a>
+            </div>
+
+            <div class="ca-box mt-6 flex flex-wrap items-center justify-between gap-3 rounded-sm px-4 py-3">
+              <div class="min-w-0">
+                <p class="font-mono text-[10px] tracking-[0.24em] text-tick">CONTRACT ADDRESS · SOLANA</p>
+                <p id="ca-text" class="truncate font-mono text-sm text-white sm:text-base">TBA</p>
+              </div>
+              <button id="copy-ca" type="button" class="btn-chart shrink-0 rounded-sm px-4 py-2 font-display text-xs tracking-[0.18em]">
+                COPY CA
+              </button>
+            </div>
+          </div>
+
+          <div class="relative reveal" style="animation-delay: 0.12s">
+            <div class="ms-window relative overflow-hidden rounded-sm hud">
+              <div class="ms-chrome flex items-center justify-between px-3 py-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="dot dot-r"></span>
+                  <span class="dot dot-y"></span>
+                  <span class="dot dot-g"></span>
+                </div>
+                <p class="font-mono text-[10px] tracking-[0.2em] text-tick">MEME_STONKS.CHART // BANNER</p>
+                <p class="font-mono text-[10px] text-neon">+∞%</p>
+              </div>
+              <img src="banner.jpg" alt="Meme Stonks banner" class="aspect-[16/10] w-full object-cover" />
+              <div class="grid grid-cols-3 divide-x divide-tick/15 border-t border-tick/15 font-mono text-[10px] tracking-[0.12em]">
+                <div class="px-3 py-2">
+                  <p class="text-tick/70">TICKER</p>
+                  <p class="text-white">$MEMESTONKS</p>
+                </div>
+                <div class="px-3 py-2">
+                  <p class="text-tick/70">CHAIN</p>
+                  <p class="text-neon">SOLANA</p>
+                </div>
+                <div class="px-3 py-2">
+                  <p class="text-tick/70">TREND</p>
+                  <p class="text-stonk">STONKS ↑</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="mx-auto max-w-6xl px-4 py-16">
+        <div class="mb-8 flex items-end justify-between gap-4">
+          <div>
+            <p class="font-mono text-[10px] tracking-[0.28em] text-stonk">01 // TERMINAL BRIEF</p>
+            <h2 class="mt-2 font-display text-4xl tracking-wide sm:text-5xl">WHY $MEMESTONKS</h2>
+          </div>
+          <img src="logo.jpg" alt="" class="hidden h-16 w-16 rounded-full ring-2 ring-stonk/50 sm:block" />
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <article class="step-card rounded-sm p-6">
+            <p class="font-display text-xl tracking-wide text-stonk">ROCKET MEMES</p>
+            <p class="mt-3 text-sm leading-relaxed text-blue-100/75">The classic stonks suit meets Solana speed. Every candle is a punchline and every dip is a setup.</p>
+          </article>
+          <article class="step-card rounded-sm p-6">
+            <p class="font-display text-xl tracking-wide text-neon">DIAMOND HANDS</p>
+            <p class="mt-3 text-sm leading-relaxed text-blue-100/75">Hold like the board is always green. $MemeStonks is built for conviction, chaos, and community.</p>
+          </article>
+          <article class="step-card rounded-sm p-6">
+            <p class="font-display text-xl tracking-wide text-ringC">SOLANA ENERGY</p>
+            <p class="mt-3 text-sm leading-relaxed text-blue-100/75">Fast fills, low fees, and unstoppable meme velocity. The floor is a number chart. The ceiling is the moon.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="buy" class="mx-auto max-w-6xl px-4 py-16">
+        <div class="mb-8">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-stonk">02 // ORDER TICKET</p>
+          <h2 class="mt-2 font-display text-4xl tracking-wide sm:text-5xl">HOW TO BUY $MEMESTONKS</h2>
+          <p class="mt-3 max-w-2xl text-sm text-blue-100/70">Four steps to load $MemeStonks on Solana. Wallet, SOL, swap, moon.</p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <article class="step-card rounded-sm p-5">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="step-num grid h-10 w-10 place-items-center rounded-sm p-[2px]">
+                <span class="grid h-full w-full place-items-center bg-pit font-display text-lg">01</span>
+              </span>
+              <span class="font-mono text-[10px] tracking-[0.18em] text-tick">WALLET</span>
+            </div>
+            <h3 class="font-display text-xl tracking-wide">GET A SOLANA WALLET</h3>
+            <p class="mt-2 text-sm leading-relaxed text-blue-100/70">Install Phantom or Solflare. Create a wallet and back up your seed like a true market maker.</p>
+          </article>
+
+          <article class="step-card rounded-sm p-5">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="step-num grid h-10 w-10 place-items-center rounded-sm p-[2px]">
+                <span class="grid h-full w-full place-items-center bg-pit font-display text-lg">02</span>
+              </span>
+              <span class="font-mono text-[10px] tracking-[0.18em] text-tick">FUND</span>
+            </div>
+            <h3 class="font-display text-xl tracking-wide">LOAD SOL</h3>
+            <p class="mt-2 text-sm leading-relaxed text-blue-100/70">Buy SOL on an exchange or on-ramp, then send it to your wallet. SOL is the fuel for the swap.</p>
+          </article>
+
+          <article class="step-card rounded-sm p-5">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="step-num grid h-10 w-10 place-items-center rounded-sm p-[2px]">
+                <span class="grid h-full w-full place-items-center bg-pit font-display text-lg">03</span>
+              </span>
+              <span class="font-mono text-[10px] tracking-[0.18em] text-tick">ROUTE</span>
+            </div>
+            <h3 class="font-display text-xl tracking-wide">OPEN THE SWAP</h3>
+            <p class="mt-2 text-sm leading-relaxed text-blue-100/70">Hit <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="text-stonk underline-offset-2 hover:underline">Buy Now</a>. SOL is already set as input and $MemeStonks as output.</p>
+          </article>
+
+          <article class="step-card rounded-sm p-5">
+            <div class="mb-4 flex items-center justify-between">
+              <span class="step-num grid h-10 w-10 place-items-center rounded-sm p-[2px]">
+                <span class="grid h-full w-full place-items-center bg-pit font-display text-lg">04</span>
+              </span>
+              <span class="font-mono text-[10px] tracking-[0.18em] text-tick">FILL</span>
+            </div>
+            <h3 class="font-display text-xl tracking-wide">SWAP &amp; HODL</h3>
+            <p class="mt-2 text-sm leading-relaxed text-blue-100/70">Confirm the swap, copy the CA so you always have the pair, then diamond-hand $MemeStonks to the moon.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="chart" class="mx-auto max-w-6xl px-4 py-16">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="font-mono text-[10px] tracking-[0.28em] text-stonk">03 // LIVE TAPE</p>
+            <h2 class="mt-2 font-display text-4xl tracking-wide sm:text-5xl">CHART</h2>
+          </div>
+          <a href="https://dexscreener.com/solana/TBA" target="_blank" rel="noopener noreferrer" class="btn-chart inline-flex items-center gap-2 rounded-sm px-5 py-2.5 font-display tracking-[0.16em]">
+            OPEN DEXSCREENER
+          </a>
+        </div>
+
+        <div class="ms-window overflow-hidden rounded-sm">
+          <div class="ms-chrome flex items-center justify-between px-3 py-2">
+            <div class="flex items-center gap-1.5">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+            </div>
+            <p class="font-mono text-[10px] tracking-[0.18em] text-tick">DEXSCREENER · SOLANA · $MEMESTONKS / SOL</p>
+            <p class="hidden font-mono text-[10px] text-neon sm:block">EMBED</p>
+          </div>
+          <div class="relative h-[420px] bg-pit sm:h-[540px]">
+            <iframe
+              title="Dexscreener chart for $MemeStonks"
+              src="https://dexscreener.com/solana/TBA?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=1&chartType=usd&interval=15"
+              class="absolute inset-0 h-full w-full border-0"
+              allow="clipboard-write"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section id="community" class="mx-auto max-w-6xl px-4 py-16">
+        <div class="ms-window overflow-hidden rounded-sm">
+          <div class="ms-chrome flex items-center justify-between px-3 py-2">
+            <div class="flex items-center gap-1.5">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+            </div>
+            <p class="font-mono text-[10px] tracking-[0.18em] text-tick">04 // COMMUNITY DESK</p>
+            <p class="font-mono text-[10px] text-stonk">JOIN</p>
+          </div>
+          <div class="grid items-center gap-8 p-6 md:grid-cols-[auto_1fr] md:p-10">
+            <div class="relative mx-auto grid h-28 w-28 place-items-center">
+              <span class="ring absolute inset-0 rounded-full"></span>
+              <img src="logo.jpg" alt="Meme Stonks" class="relative z-[1] h-[6.4rem] w-[6.4rem] rounded-full object-cover" />
+            </div>
+            <div>
+              <h2 class="font-display text-3xl tracking-wide sm:text-4xl">TRADE THE MEME. JOIN THE FLOOR.</h2>
+              <p class="mt-3 max-w-xl text-sm leading-relaxed text-blue-100/75">
+                Meme Stonks brings rocket-fueled memes, diamond hands, and unstoppable Solana energy straight to the moon! Plug into Telegram and X for the next green candle.
+              </p>
+              <div class="mt-6 flex flex-wrap items-center gap-3">
+                <a href="https://t.me/MemeStonksSol" target="_blank" rel="noopener noreferrer" class="social-btn inline-flex items-center gap-3 rounded-sm border border-tick/25 bg-navy/60 px-4 py-2">
+                  <img src="tg.png" alt="" class="h-9 w-9 rounded-full object-cover" />
+                  <span class="font-display tracking-[0.14em]">TELEGRAM</span>
+                </a>
+                <a href="https://x.com/MemeStonksSolX" target="_blank" rel="noopener noreferrer" class="social-btn inline-flex items-center gap-3 rounded-sm border border-white/15 bg-navy/60 px-4 py-2">
+                  <img src="x.png" alt="" class="h-9 w-9 rounded-full object-cover" />
+                  <span class="font-display tracking-[0.14em]">TWITTER / X</span>
+                </a>
+                <button type="button" id="copy-ca-2" class="btn-chart rounded-sm px-5 py-3 font-display tracking-[0.14em]">COPY CA</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-tick/15 px-4 py-8 pb-24 md:pb-8">
+      <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
+        <p class="font-mono text-[11px] tracking-[0.16em] text-tick/80">© 2026 MEME STONKS · $MEMESTONKS · SOLANA</p>
+        <div class="flex items-center gap-4 font-display text-xs tracking-[0.16em] text-tick">
+          <a href="#buy" class="hover:text-neon">HOW TO BUY</a>
+          <a href="#chart" class="hover:text-neon">CHART</a>
+          <a href="https://t.me/MemeStonksSol" target="_blank" rel="noopener noreferrer" class="hover:text-neon">TG</a>
+          <a href="https://x.com/MemeStonksSolX" target="_blank" rel="noopener noreferrer" class="hover:text-neon">X</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toast" class="rounded-sm border border-neon/40 bg-pit/95 px-4 py-2 font-mono text-xs tracking-[0.18em] text-neon shadow-neon">
+    CA COPIED
+  </div>
+
+  <div class="fixed bottom-0 left-0 right-0 z-40 border-t border-tick/15 bg-pit/92 p-3 backdrop-blur md:hidden">
+    <div class="grid grid-cols-2 gap-2">
+      <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="btn-buy rounded-sm py-3 text-center font-display tracking-[0.16em]">BUY NOW</a>
+      <a href="https://dexscreener.com/solana/TBA" target="_blank" rel="noopener noreferrer" class="btn-chart rounded-sm py-3 text-center font-display tracking-[0.16em]">CHART</a>
+    </div>
+  </div>
+
+  <script>
+    const CA = "TBA";
+    const symbols = ["MEME", "STNK", "SOL", "MOON", "HODL", "PUMP", "DIAM", "ROKT", "BULL", "APE", "WAGMI", "GIGA"];
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function fillBoard() {
+      const board = document.getElementById("ms-board");
+      const count = window.innerWidth < 768 ? 48 : 96;
+      board.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        const up = Math.random() > 0.38;
+        const px = rand(0.0001, 42).toFixed(Math.random() > 0.5 ? 3 : 2);
+        const chg = (up ? "+" : "-") + rand(0.12, 18.4).toFixed(2) + "%";
+        const el = document.createElement("div");
+        el.className = "ms-cell " + (up ? "up" : "dn");
+        el.innerHTML = '<span class="sym">' + symbols[i % symbols.length] + '</span><span class="px">' + px + '</span><span class="chg">' + chg + "</span>";
+        board.appendChild(el);
+      }
+    }
+
+    function tickBoard() {
+      const cells = document.querySelectorAll(".ms-cell");
+      if (!cells.length) return;
+      const cell = cells[Math.floor(Math.random() * cells.length)];
+      const up = Math.random() > 0.4;
+      cell.classList.remove("up", "dn", "flash-up", "flash-dn");
+      cell.classList.add(up ? "up" : "dn", up ? "flash-up" : "flash-dn");
+      cell.querySelector(".px").textContent = rand(0.0001, 42).toFixed(Math.random() > 0.5 ? 3 : 2);
+      cell.querySelector(".chg").textContent = (up ? "+" : "-") + rand(0.12, 18.4).toFixed(2) + "%";
+    }
+
+    function fillTape() {
+      const items = [
+        ['<span class="or">$MEMESTONKS</span>', '<span class="up">+420.69%</span>', '<span>SOLANA</span>', '<span class="up">DIAMOND HANDS</span>', '<span class="or">STONKS ↑</span>', '<span>CA TBA</span>', '<span class="up">TO THE MOON</span>', '<span>ROCKET MEMES</span>']
+      ];
+      const row = items[0].join("") + items[0].join("");
+      document.getElementById("tape").innerHTML = row + row;
+    }
+
+    function drawCandles() {
+      const canvas = document.getElementById("ms-candles");
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = innerWidth * dpr;
+      canvas.height = innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+      const w = 9;
+      const gap = 6;
+      const cols = Math.ceil(innerWidth / (w + gap)) + 2;
+      let y = innerHeight * 0.62;
+      for (let i = 0; i < cols; i++) {
+        const body = rand(8, 54);
+        const wick = rand(6, 28);
+        const up = Math.random() > 0.35;
+        const x = i * (w + gap) + 4;
+        y += rand(-18, 16);
+        y = Math.min(innerHeight * 0.86, Math.max(innerHeight * 0.28, y));
+        ctx.strokeStyle = up ? "rgba(0,230,118,0.55)" : "rgba(255,77,109,0.4)";
+        ctx.fillStyle = up ? "rgba(0,230,118,0.28)" : "rgba(255,140,0,0.18)";
+        ctx.beginPath();
+        ctx.moveTo(x + w / 2, y - wick);
+        ctx.lineTo(x + w / 2, y + body + wick);
+        ctx.stroke();
+        ctx.fillRect(x, y, w, body);
+      }
+
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(255,140,0,0.35)";
+      ctx.lineWidth = 1.4;
+      let ly = innerHeight * 0.55;
+      ctx.moveTo(0, ly);
+      for (let x = 0; x <= innerWidth; x += 18) {
+        ly += rand(-10, 8);
+        ctx.lineTo(x, ly);
+      }
+      ctx.stroke();
+    }
+
+    async function copyCA() {
+      try {
+        await navigator.clipboard.writeText(CA);
+      } catch {
+        const tmp = document.createElement("textarea");
+        tmp.value = CA;
+        document.body.appendChild(tmp);
+        tmp.select();
+        document.execCommand("copy");
+        tmp.remove();
+      }
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1600);
+    }
+
+    document.getElementById("copy-ca").addEventListener("click", copyCA);
+    document.getElementById("copy-ca-2").addEventListener("click", copyCA);
+
+    document.getElementById("menu-btn").addEventListener("click", () => {
+      document.getElementById("mobile-menu").classList.toggle("hidden");
+    });
+
+    document.querySelectorAll("#mobile-menu a").forEach((a) => {
+      a.addEventListener("click", () => document.getElementById("mobile-menu").classList.add("hidden"));
+    });
+
+    const nav = document.querySelector(".ms-nav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 12);
+    });
+
+    const sections = ["about", "buy", "chart", "community"];
+    const links = document.querySelectorAll(".ms-nav-link");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        links.forEach((link) => {
+          link.classList.toggle("is-active", link.getAttribute("href") === "#" + entry.target.id);
+        });
+      });
+    }, { rootMargin: "-40% 0px -50% 0px" });
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+
+    fillBoard();
+    fillTape();
+    drawCandles();
+    setInterval(tickBoard, 420);
+    window.addEventListener("resize", () => {
+      fillBoard();
+      drawCandles();
+    });
+  </script>
+</body>
+</html>
